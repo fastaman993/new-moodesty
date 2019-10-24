@@ -3,6 +3,10 @@ import { Row, Col, Button } from "react-bootstrap";
 import girl from "../assets/girl.jpg";
 
 export default function Login() {
+  const goLogin = () => {
+    window.location = "http://localhost:5000/login";
+  };
+
   return (
     <div
       style={{
@@ -24,6 +28,7 @@ export default function Login() {
           <Col md={5}>
             <img
               src={girl}
+              alt="girl"
               style={{
                 height: 300,
                 width: 225,
@@ -49,6 +54,7 @@ export default function Login() {
               variant="outline-info"
               size="lg"
               style={{ marginTop: 20, borderRadius: 20 }}
+              onClick={() => goLogin()}
             >
               <i class="fab fa-spotify"></i> Login with spotify
             </Button>
