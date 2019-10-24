@@ -11,6 +11,7 @@ import {
 import { Redirect } from "react-router-dom";
 import axios from "axios";
 import queryString from "query-string";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 const parsed = queryString.parse(window.location.search);
 
@@ -21,6 +22,10 @@ export default class Home extends Component {
     userData: {},
     errorMsg: "",
     userImage: "",
+    limit: 10,
+    offset: 0,
+    total: 0,
+    hasMore: true,
     isLoading: false
   };
 
@@ -38,14 +43,14 @@ export default class Home extends Component {
         });
       })
       .catch(err => {
-        // this.setState({ errorMsg: `${err}` });
+        console.log(`error occurs: ${err}`);
       });
   };
 
   getMood = () => {
     axios
       .get(
-        `https://api.spotify.com/v1/browse/categories/mood/playlists?limit=6`,
+        `https://api.spotify.com/v1/browse/categories/mood/playlists?offset=${this.state.offset}&limit=${this.state.limit}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("access_token")}`
@@ -54,11 +59,44 @@ export default class Home extends Component {
       )
       .then(response => {
         this.setState({
-          playlist: response.data.playlists.items
+          playlist: [...this.state.playlist, ...response.data.playlists.items],
+          offset: this.state.offset + 10,
+          total: response.data.playlists.total
         });
       })
       .catch(err => {
-        // this.setState({ errorMsg: `${err}` });
+        console.log(`error occurs: ${err}`);
+      });
+  };
+
+  getMoodMore = () => {
+    axios
+      .get(
+        `https://api.spotify.com/v1/browse/categories/mood/playlists?offset=${this.state.offset}&limit=${this.state.limit}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("access_token")}`
+          }
+        }
+      )
+      .then(response => {
+        if (this.state.playlist.length >= this.state.total) {
+          this.setState({ hasMore: false });
+          return;
+        }
+
+        setTimeout(() => {
+          this.setState({
+            playlist: [
+              ...this.state.playlist,
+              ...response.data.playlists.items
+            ],
+            offset: this.state.offset + 10
+          });
+        }, 1500);
+      })
+      .catch(err => {
+        console.log(`error occurs: ${err}`);
       });
   };
 
@@ -123,7 +161,14 @@ export default class Home extends Component {
       return <Redirect to="/" />;
     }
 
-    const { playlist, playlistID, userData, userImage, isLoading } = this.state;
+    const {
+      playlist,
+      playlistID,
+      userData,
+      userImage,
+      isLoading,
+      hasMore
+    } = this.state;
 
     return (
       <div
@@ -133,13 +178,13 @@ export default class Home extends Component {
       >
         <Container>
           <Row>
-            <Col md={9} style={{ marginTop: "15vh" }}>
+            <Col md={9} style={{ marginTop: "8vh" }}>
               <h1 style={{ color: "#FFF" }}>Home</h1>
             </Col>
             <Col md={3}>
               <div
                 style={{
-                  marginTop: "15vh",
+                  marginTop: "8vh",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center"
@@ -207,70 +252,85 @@ export default class Home extends Component {
                     </Button>
                   )}
                 </Col>
-
-                {playlist.map((item, index) => (
-                  <Col key={index} sm={4}>
-                    {isLoading ? (
-                      <Card
-                        style={{
-                          background: "transparent",
-                          paddingTop: 15,
-                          borderWidth: 0
-                        }}
-                      >
-                        <Card.Img
-                          variant="top"
-                          src={item.images[0].url}
-                          style={{
-                            borderTopLeftRadius: 20,
-                            borderTopRightRadius: 20
-                          }}
-                        />
-                        <Card.Title
-                          style={{
-                            fontSize: 18,
-                            textAlign: "center",
-                            marginTop: 10,
-                            fontWeight: "bold",
-                            color: "#FFF"
-                          }}
-                        >
-                          {item.name}
-                        </Card.Title>
-                      </Card>
-                    ) : (
-                      <Card
-                        onClick={() => this.changePlaylist(item.uri)}
-                        style={{
-                          background: "transparent",
-                          paddingTop: 15,
-                          borderWidth: 0
-                        }}
-                      >
-                        <Card.Img
-                          variant="top"
-                          src={item.images[0].url}
-                          style={{
-                            borderTopLeftRadius: 20,
-                            borderTopRightRadius: 20
-                          }}
-                        />
-                        <Card.Title
-                          style={{
-                            fontSize: 18,
-                            textAlign: "center",
-                            marginTop: 10,
-                            fontWeight: "bold",
-                            color: "#FFF"
-                          }}
-                        >
-                          {item.name}
-                        </Card.Title>
-                      </Card>
-                    )}
-                  </Col>
-                ))}
               </Row>
+              <InfiniteScroll
+                style={{ marginTop: 15, borderRadius: 20 }}
+                dataLength={playlist.length}
+                next={this.getMoodMore}
+                hasMore={hasMore}
+                loader={<Spinner animation="grow" variant="light" />}
+                height={550}
+                endMessage={
+                  <p style={{ textAlign: "center" }}>
+                    <b>Yay! You have seen it all</b>
+                  </p>
+                }
+              >
+                <Row style={{ maxWidth: "61vw" }}>
+                  {playlist.map((item, index) => (
+                    <Col key={index} sm={4}>
+                      {isLoading ? (
+                        <Card
+                          style={{
+                            background: "transparent",
+                            paddingTop: 15,
+                            borderWidth: 0
+                          }}
+                        >
+                          <Card.Img
+                            variant="top"
+                            src={item.images[0].url}
+                            style={{
+                              borderTopLeftRadius: 20,
+                              borderTopRightRadius: 20
+                            }}
+                          />
+                          <Card.Title
+                            style={{
+                              fontSize: 18,
+                              textAlign: "center",
+                              marginTop: 10,
+                              fontWeight: "bold",
+                              color: "#FFF"
+                            }}
+                          >
+                            {item.name}
+                          </Card.Title>
+                        </Card>
+                      ) : (
+                        <Card
+                          onClick={() => this.changePlaylist(item.uri)}
+                          style={{
+                            background: "transparent",
+                            paddingTop: 15,
+                            borderWidth: 0
+                          }}
+                        >
+                          <Card.Img
+                            variant="top"
+                            src={item.images[0].url}
+                            style={{
+                              borderTopLeftRadius: 20,
+                              borderTopRightRadius: 20
+                            }}
+                          />
+                          <Card.Title
+                            style={{
+                              fontSize: 18,
+                              textAlign: "center",
+                              marginTop: 10,
+                              fontWeight: "bold",
+                              color: "#FFF"
+                            }}
+                          >
+                            {item.name}
+                          </Card.Title>
+                        </Card>
+                      )}
+                    </Col>
+                  ))}
+                </Row>
+              </InfiniteScroll>
             </Col>
             <Col md={4}>
               <div style={{ display: "flex", justifyContent: "center" }}>
