@@ -1,11 +1,18 @@
 import React from "react";
 import { Row, Col, Button } from "react-bootstrap";
+import { Redirect } from "react-router-dom";
 import girl from "../assets/girl.jpg";
 
 export default function Login() {
   const goLogin = () => {
     window.location = "http://localhost:5000/login";
   };
+
+  const token = localStorage.getItem("access_token");
+
+  if (token) {
+    return <Redirect to="/home" />;
+  }
 
   return (
     <div
@@ -56,7 +63,7 @@ export default function Login() {
               style={{ marginTop: 20, borderRadius: 20 }}
               onClick={() => goLogin()}
             >
-              <i class="fab fa-spotify"></i> Login with spotify
+              <i className="fab fa-spotify"></i> Login with spotify
             </Button>
           </Col>
         </Row>
