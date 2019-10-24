@@ -5,7 +5,7 @@ import girl from "../assets/girl.jpg";
 
 export default function Login() {
   const goLogin = () => {
-    window.location = "http://localhost:5000/login";
+    window.location = "https://moodesty-backend.herokuapp.com/login";
   };
 
   const token = localStorage.getItem("access_token");
