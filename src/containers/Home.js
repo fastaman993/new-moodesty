@@ -19,6 +19,7 @@ export default class Home extends Component {
     playlist: [],
     playlistID: "",
     userData: {},
+    errorMsg: "",
     userImage: "",
     isLoading: false
   };
@@ -37,7 +38,7 @@ export default class Home extends Component {
         });
       })
       .catch(err => {
-        console.log(`error occurs ${err}`);
+        // this.setState({ errorMsg: `${err}` });
       });
   };
 
@@ -57,7 +58,7 @@ export default class Home extends Component {
         });
       })
       .catch(err => {
-        console.log(`error occurs ${err}`);
+        // this.setState({ errorMsg: `${err}` });
       });
   };
 
@@ -100,11 +101,12 @@ export default class Home extends Component {
   onLogout = () => {
     localStorage.clear();
     this.props.history.push("/");
+    window.location.reload();
   };
 
   setToken = () => {
     const token = localStorage.getItem("access_token");
-    if (!token) {
+    if (!token && parsed.access_token !== undefined) {
       localStorage.setItem("access_token", parsed.access_token);
     }
   };
@@ -162,7 +164,10 @@ export default class Home extends Component {
                       </Dropdown.Toggle>
 
                       <Dropdown.Menu style={{ borderRadius: 20 }}>
-                        <Dropdown.Item onClick={() => this.onLogout()}>
+                        <Dropdown.Item
+                          style={{ borderRadius: 20 }}
+                          onClick={() => this.onLogout()}
+                        >
                           Logout
                         </Dropdown.Item>
                       </Dropdown.Menu>
