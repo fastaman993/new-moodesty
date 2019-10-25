@@ -266,7 +266,15 @@ export default class Home extends Component {
                 dataLength={playlist.length}
                 next={this.getMoodMore}
                 hasMore={hasMore}
-                loader={<Spinner animation="grow" variant="light" />}
+                loader={
+                  <div style={{ width: "100%" }}>
+                    <Spinner
+                      animation="grow"
+                      variant="light"
+                      style={{ margin: "auto" }}
+                    />
+                  </div>
+                }
                 height={550}
                 endMessage={
                   <p style={{ textAlign: "center" }}>
