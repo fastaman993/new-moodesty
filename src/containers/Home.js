@@ -186,10 +186,10 @@ export default class Home extends Component {
       >
         <Container>
           <Row>
-            <Col md={9} style={{ marginTop: "8vh" }}>
+            <Col md={8} style={{ marginTop: "8vh" }}>
               <h1 style={{ color: "#FFF" }}>Home</h1>
             </Col>
-            <Col md={3}>
+            <Col md={4}>
               <div
                 style={{
                   marginTop: "8vh",
