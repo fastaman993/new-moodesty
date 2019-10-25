@@ -22,7 +22,7 @@ export default class Home extends Component {
     errorMsg: "",
     userName: "",
     userImage: "",
-    limit: 10,
+    limit: 9,
     offset: 0,
     total: 0,
     hasMore: true,
@@ -68,7 +68,7 @@ export default class Home extends Component {
       .then(response => {
         this.setState({
           playlist: [...this.state.playlist, ...response.data.playlists.items],
-          offset: this.state.offset + 10,
+          offset: this.state.offset + 9,
           total: response.data.playlists.total
         });
       })
@@ -99,7 +99,7 @@ export default class Home extends Component {
               ...this.state.playlist,
               ...response.data.playlists.items
             ],
-            offset: this.state.offset + 10
+            offset: this.state.offset + 9
           });
         }, 1500);
       })
