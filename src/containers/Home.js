@@ -19,8 +19,8 @@ export default class Home extends Component {
   state = {
     playlist: [],
     playlistID: "",
-    userData: {},
     errorMsg: "",
+    userName: "",
     userImage: "",
     limit: 10,
     offset: 0,
@@ -38,9 +38,17 @@ export default class Home extends Component {
       })
       .then(response => {
         this.setState({
-          userData: response.data,
-          userImage: response.data.images[0].url
+          userName: response.data.display_name
         });
+        if (response.data.images.length > 0) {
+          this.setState({
+            userImage: response.data.images[0].url
+          });
+        } else {
+          this.setState({
+            userImage: `https://lejeunefoundation.org/wp-content/uploads/2017/06/male.jpg`
+          });
+        }
       })
       .catch(err => {
         console.log(`error occurs: ${err}`);
@@ -136,8 +144,8 @@ export default class Home extends Component {
     }, 1000);
   };
 
-  onLogout = () => {
-    localStorage.clear();
+  onLogout = async () => {
+    await localStorage.clear();
     this.props.history.push("/");
     window.location.reload();
   };
@@ -164,7 +172,7 @@ export default class Home extends Component {
     const {
       playlist,
       playlistID,
-      userData,
+      userName,
       userImage,
       isLoading,
       hasMore
@@ -205,7 +213,7 @@ export default class Home extends Component {
                         id="dropdown-basic"
                         style={{ borderRadius: 20, color: "#2C3E50" }}
                       >
-                        {userData.display_name}
+                        {userName}
                       </Dropdown.Toggle>
 
                       <Dropdown.Menu style={{ borderRadius: 20 }}>
