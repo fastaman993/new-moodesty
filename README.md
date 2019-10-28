@@ -1,7 +1,5 @@
 <h1 align="center">Moodesty - Web App</h1><br/><br/>
 
-<br/>
-
 <a href="#">
   <img src="https://img.shields.io/badge/React-16.10.2-blue.svg?style=flat-square" alt="npm version">
 </a>
@@ -19,7 +17,7 @@ Moodesty is the music recommendation app based on Spotify API. With this app you
 * [`npm`](https://www.npmjs.com/get-npm)
 * [`react`](https://reactjs.org/)
 * [`react-router-dom`](https://reacttraining.com/react-router/web/guides/quick-start)
-* [`spotify-api`](`https://developer.spotify.com/documentation/web-api/`)
+* [`spotify-api`](https://developer.spotify.com/documentation/web-api)
  
 ## Screenshot
   <p align="center">
