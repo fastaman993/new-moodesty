@@ -3,12 +3,8 @@
 <br/><br/>
 
 <a href="#">
-  <img src="https://img.shields.io/badge/React%20Native-0.60-blue.svg?style=flat-square" alt="npm version">
+  <img src="https://img.shields.io/badge/React-16.10.2-blue.svg?style=flat-square" alt="npm version">
 </a>
-<a href="#">
-  <img src="https://img.shields.io/badge/Firebase-7.2.0-yellow.svg?style=flat-square" alt="npm version">
-</a>
-
 
 ## Introduction
 
@@ -23,7 +19,7 @@ Moodesty is the music recommendation app based on Spotify API. With this app you
 * [`npm`](https://www.npmjs.com/get-npm)
 * [`react`](https://reactjs.org/)
 * [`react-router-dom`](https://reacttraining.com/react-router/web/guides/quick-start)
-* [`Spotify API`](`https://developer.spotify.com/documentation/web-api/`)
+* [`spotify-api`](`https://developer.spotify.com/documentation/web-api/`)
  
 ## Screenshot
   <p align="center">
@@ -40,5 +36,4 @@ Moodesty is the music recommendation app based on Spotify API. With this app you
   </p>
    
 ## License
-----
 [ISC](https://en.wikipedia.org/wiki/ISC_license "ISC")
