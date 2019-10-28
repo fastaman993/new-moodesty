@@ -1,6 +1,6 @@
 <h1 align="center">Moodesty - Web App</h1><br/><br/>
 
-<br/><br/>
+<br/>
 
 <a href="#">
   <img src="https://img.shields.io/badge/React-16.10.2-blue.svg?style=flat-square" alt="npm version">
